@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
-import * as S from "./styles";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchTrendingMovies } from "../../assets/services/movies";
 import { MovieCard } from "../MovieCard/MovieCard";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Swiper as SwiperType } from "swiper";
+
+import * as S from "./styles";
 
 interface MovieProps {
     backdrop_path: string;
@@ -24,6 +28,7 @@ interface MovieProps {
 export const MovieList: React.FC = () => {
     const [movies, setMovies] = useState<MovieProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const swiperRef = useRef<SwiperType | null>(null);
 
     useEffect(() => {
         const getMovies = async () => {
@@ -39,22 +44,47 @@ export const MovieList: React.FC = () => {
         getMovies();
     }, []);
 
+    const handleSlideClick = (index: number) => {
+        if (swiperRef.current) {
+            swiperRef.current.slideToLoop(index);
+        }
+    };
+
     if (loading) {
         return <p>Carregando</p>;
     }
 
     return (
         <S.SectionMovieList>
-            <ul>
-                {movies.map((movie) => (
-                    <li key={movie.id}>
+            <Swiper
+                speed={600}
+                loop={true}
+                loopAdditionalSlides={8}
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                spaceBetween={50}
+                slidesPerView={10}
+                navigation
+                watchSlidesProgress={true}
+                centeredSlides={true}
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+                onSwiper={(swiper) => {
+                    swiperRef.current = swiper;
+                }}
+                onSlideChange={() => console.log("slide change")}
+            >
+                {movies.map((movie, index) => (
+                    <SwiperSlide
+                        key={movie.id}
+                        onClick={() => handleSlideClick(index)}
+                    >
                         <MovieCard
                             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                             title={movie.title}
                         />
-                    </li>
+                    </SwiperSlide>
                 ))}
-            </ul>
+            </Swiper>
         </S.SectionMovieList>
     );
 };
