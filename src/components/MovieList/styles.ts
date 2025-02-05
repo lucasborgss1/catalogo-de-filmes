@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import "swiper/css";
+import "swiper/css/pagination";
 
 export const SectionMovieList = styled.section`
     width: 100%;
@@ -13,7 +15,7 @@ export const SectionMovieList = styled.section`
 
     .swiper-slide:not(.swiper-slide-active) {
         opacity: 0.7;
-        transform: scale(0.86);
+        transform: scale(0.7);
     }
 
     .swiper-slide-active {

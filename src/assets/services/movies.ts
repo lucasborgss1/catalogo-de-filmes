@@ -22,3 +22,41 @@ export const fetchTrendingMovies = async () => {
         throw err;
     }
 };
+
+export const fetchMovieImages = async (id: number) => {
+    const options = {
+        method: "GET",
+        url: `https://api.themoviedb.org/3/movie/${id}/images`,
+        headers: {
+            accept: "application/json",
+            Authorization: `${apiKey}`,
+        },
+    };
+
+    try {
+        const response = await axios.request(options);
+        return response.data.backdrops;
+    } catch (err) {
+        console.log("Error fetching images: ", err);
+        throw err;
+    }
+};
+
+export const fetchTvSeriesImages = async (id: number) => {
+    const options = {
+        method: "GET",
+        url: `https://api.themoviedb.org/3/tv/${id}/images`,
+        headers: {
+            accept: "application/json",
+            Authorization: `${apiKey}`,
+        },
+    };
+
+    try {
+        const response = await axios.request(options);
+        return response.data.backdrops;
+    } catch (err) {
+        console.log("Error fetching images: ", err);
+        throw err;
+    }
+};

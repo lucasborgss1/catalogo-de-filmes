@@ -10,6 +10,6 @@ export const MovieCard = styled.article`
 
 export const MovieImg = styled.img`
     border-radius: 10px;
-    width: 146px;
-    height: 204px;
+    width: 136px;
+    height: 194px;
 `;

@@ -6,28 +6,33 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
 
 import * as S from "./styles";
+import { MovieInfos } from "../MovieInfos/MovieInfos";
 
-interface MovieProps {
-    backdrop_path: string;
+export interface MovieProps {
     id: number;
-    title: string;
-    original_title: string;
-    overview: string;
-    poster_path: string;
     media_type: string;
+    backdrop_path: string;
+    poster_path: string;
     adult: boolean;
     original_language: string;
-    genre_ids: [number];
+    genre_ids: number[];
     popularity: number;
-    release_date: string;
-    video: boolean;
     vote_average: number;
     vote_count: number;
+
+    title?: string;
+    name?: string;
+    original_title?: string;
+    original_name?: string;
+    overview?: string;
+    release_date?: string;
+    first_air_date?: string;
 }
 
 export const MovieList: React.FC = () => {
     const [movies, setMovies] = useState<MovieProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [movieOnFocus, setMovieOnFocus] = useState<MovieProps | null>(null);
     const swiperRef = useRef<SwiperType | null>(null);
 
     useEffect(() => {
@@ -35,6 +40,7 @@ export const MovieList: React.FC = () => {
             try {
                 const data = await fetchTrendingMovies();
                 setMovies(data.results);
+                setMovieOnFocus(data.results[0]);
             } catch (err) {
                 console.log(err);
             } finally {
@@ -48,6 +54,7 @@ export const MovieList: React.FC = () => {
         if (swiperRef.current) {
             swiperRef.current.slideToLoop(index);
         }
+        setMovieOnFocus(movies[index]);
     };
 
     if (loading) {
@@ -55,36 +62,37 @@ export const MovieList: React.FC = () => {
     }
 
     return (
-        <S.SectionMovieList>
-            <Swiper
-                speed={600}
-                loop={true}
-                loopAdditionalSlides={8}
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
-                spaceBetween={50}
-                slidesPerView={10}
-                navigation
-                watchSlidesProgress={true}
-                centeredSlides={true}
-                pagination={{ clickable: true }}
-                scrollbar={{ draggable: true }}
-                onSwiper={(swiper) => {
-                    swiperRef.current = swiper;
-                }}
-                onSlideChange={() => console.log("slide change")}
-            >
-                {movies.map((movie, index) => (
-                    <SwiperSlide
-                        key={movie.id}
-                        onClick={() => handleSlideClick(index)}
-                    >
-                        <MovieCard
-                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                            title={movie.title}
-                        />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        </S.SectionMovieList>
+        <>
+            <MovieInfos movie={movieOnFocus} />
+            <S.SectionMovieList>
+                <Swiper
+                    speed={800}
+                    loop={true}
+                    loopAdditionalSlides={8}
+                    modules={[Navigation, Pagination, Scrollbar, A11y]}
+                    spaceBetween={50}
+                    slidesPerView={10}
+                    navigation
+                    watchSlidesProgress={true}
+                    centeredSlides={true}
+                    onSwiper={(swiper) => {
+                        swiperRef.current = swiper;
+                    }}
+                    onSlideChange={() => console.log(movieOnFocus)}
+                >
+                    {movies.map((movie, index) => (
+                        <SwiperSlide
+                            key={movie.id}
+                            onClick={() => handleSlideClick(index)}
+                        >
+                            <MovieCard
+                                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                                title={movie.title || movie.name}
+                            />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </S.SectionMovieList>
+        </>
     );
 };
