@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { fetchTrendingMovies } from "../../assets/services/movies";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { A11y } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
 
 import * as S from "./styles";
@@ -68,11 +68,10 @@ export const MovieList: React.FC = () => {
                 <Swiper
                     speed={800}
                     loop={true}
-                    loopAdditionalSlides={8}
-                    modules={[Navigation, Pagination, Scrollbar, A11y]}
-                    spaceBetween={50}
+                    loopAdditionalSlides={4}
+                    modules={[A11y]}
+                    spaceBetween={0}
                     slidesPerView={10}
-                    navigation
                     watchSlidesProgress={true}
                     centeredSlides={true}
                     onSwiper={(swiper) => {

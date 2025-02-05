@@ -14,6 +14,7 @@ body, input, button {
 
 body {
     background-color: black;
+    height: 100vh;
 }
 
 

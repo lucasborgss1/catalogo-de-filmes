@@ -1,48 +1,48 @@
 import styled from "styled-components";
 
 interface InfoSectionProps {
-    backgroundImage?: string;
+    $backgroundImage?: string; // Use transient prop
 }
 
 export const InfoSection = styled.section<InfoSectionProps>`
-    position: relative;
-    width: 100%;
-    min-height: 500px;
-    background: ${({ backgroundImage }) =>
-        backgroundImage
-            ? `url('https://image.tmdb.org/t/p/original${backgroundImage}')`
-            : "#000"};
-    background-size: cover;
-    background-position: right center;
-    background-repeat: no-repeat;
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 633px;
+    background: ${({ $backgroundImage }) =>
+        $backgroundImage
+            ? `url('https://image.tmdb.org/t/p/original${$backgroundImage}')`
+            : "#000"};
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
     padding: 20px;
+    position: relative;
 `;
 
 export const GradientOverlay = styled.div`
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-    z-index: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 1) 25%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    z-index: 1;
 `;
 
 export const InfosWrapper = styled.div`
-    position: relative;
-    z-index: 2;
+    max-width: 40%;
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
     color: white;
+    z-index: 2;
 `;
 
 export const DetailsWrapper = styled.div`
-    max-width: 50%;
-    background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
     border-radius: 10px;
 
@@ -52,13 +52,15 @@ export const DetailsWrapper = styled.div`
     }
 
     p {
+        text-align: justify;
         font-size: 16px;
         line-height: 1.5;
+        margin-bottom: 10px;
     }
 
     span {
-        display: block;
         margin-top: 10px;
+        font-size: 0.9rem;
         font-weight: bold;
         color: #f1c40f;
     }
