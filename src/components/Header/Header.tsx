@@ -9,13 +9,13 @@ export const Header: React.FC = () => {
         <S.StyledHeader>
             <S.HeaderWrapper>
                 <S.Logo>
-                    <span>NEW</span> MOVIE
+                    <span>CINE</span> VERSE
                 </S.Logo>
                 <S.NavList>
                     <S.List>
                         <S.ListItem>
                             <S.ListItemAdress href="/">
-                                New Movie
+                                CineVerse
                             </S.ListItemAdress>
                         </S.ListItem>
                         <S.ListItem>
