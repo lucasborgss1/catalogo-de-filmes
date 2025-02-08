@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface InfoSectionProps {
-    $backgroundImage?: string; // Use transient prop
+    $backgroundImage?: string;
 }
 
 export const InfoSection = styled.section<InfoSectionProps>`
@@ -9,6 +9,8 @@ export const InfoSection = styled.section<InfoSectionProps>`
     justify-content: space-between;
     width: 100%;
     min-height: 633px;
+    position: relative;
+    padding: 20px;
     background: ${({ $backgroundImage }) =>
         $backgroundImage
             ? `url('https://image.tmdb.org/t/p/original${$backgroundImage}')`
@@ -16,8 +18,7 @@ export const InfoSection = styled.section<InfoSectionProps>`
     background-size: contain;
     background-position: right;
     background-repeat: no-repeat;
-    padding: 20px;
-    position: relative;
+    transition: background-image 0.5s ease-in-out, filter 0.5s ease-in-out;
 `;
 
 export const GradientOverlay = styled.div`
@@ -49,6 +50,7 @@ export const DetailsWrapper = styled.div`
     h2 {
         font-size: 28px;
         margin-bottom: 10px;
+        margin-right: 10px;
     }
 
     p {
@@ -58,10 +60,66 @@ export const DetailsWrapper = styled.div`
         margin-bottom: 10px;
     }
 
+    a {
+        text-decoration: none;
+    }
+`;
+
+export const TrailerButton = styled.button`
+    align-items: center;
+    padding-right: 10px;
+
+    display: flex;
+    position: relative;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    background-color: transparent;
+    overflow: hidden;
+    color: #f1c40f;
+    transition: color 0.3s ease-in-out;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 30%;
+        height: 100%;
+        background-color: #f1c40f;
+        transition: width 0.4s ease-in-out;
+        z-index: -1;
+    }
+
+    &:hover {
+        color: black;
+    }
+
+    &:hover::before {
+        width: 100%;
+    }
+
     span {
-        margin-top: 10px;
+        display: flex;
+        border-radius: 8px;
+        padding: 10px 5px;
+        padding-right: 2.5px;
+        background-color: #f1c40f;
+        color: black;
+    }
+`;
+
+export const SpanWrapper = styled.div`
+    display: flex;
+    width: auto;
+    justify-content: space-between;
+    text-align: center;
+
+    span {
         font-size: 0.9rem;
         font-weight: bold;
         color: #f1c40f;
     }
+    margin-bottom: 10px;
 `;

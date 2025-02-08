@@ -22,3 +22,23 @@ export const fetchTrendingMovies = async () => {
         throw err;
     }
 };
+
+export const fetchTrailers = async (type: string, id: number) => {
+    const options = {
+        method: "GET",
+        url: `https://api.themoviedb.org/3/${type}/${id}/videos`,
+        params: { language: "pt-br" },
+        headers: {
+            accept: "application/json",
+            Authorization: `${apiKey}`,
+        },
+    };
+
+    try {
+        const response = await axios.request(options);
+        return response.data.results[0];
+    } catch (err) {
+        console.log("Error fetching trailer: ", err);
+        throw err;
+    }
+};
