@@ -9,16 +9,18 @@ interface MovieInfoProps {
 }
 
 export const MovieInfos: React.FC<MovieInfoProps> = ({ movie, trailer }) => {
-    const [background, setBackground] = useState<string | undefined>(
-        movie?.backdrop_path
-    );
+    const [background, setBackground] = useState<string | undefined>();
 
     useEffect(() => {
         const img = new Image();
-        img.src = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+        const imageUrl = movie.backdrop_path
+            ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+            : `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+
+        img.src = imageUrl;
         img.onload = () => {
             setTimeout(() => {
-                setBackground(movie.backdrop_path);
+                setBackground(imageUrl);
             }, 50);
         };
     }, [movie]);
@@ -28,7 +30,10 @@ export const MovieInfos: React.FC<MovieInfoProps> = ({ movie, trailer }) => {
             <S.GradientOverlay />
             <S.InfosWrapper>
                 <S.DetailsWrapper>
-                    <h2>{movie?.title || movie?.name}</h2>
+                    <h2>
+                        {movie?.title ?? movie?.name ?? "Título Indisponível"}
+                    </h2>
+
                     <S.SpanWrapper>
                         <span>
                             {Array.from({ length: 5 }).map((_, index) =>
@@ -59,6 +64,9 @@ export const MovieInfos: React.FC<MovieInfoProps> = ({ movie, trailer }) => {
                             href={`https://www.youtube.com/watch?v=${trailer}`}
                             target="_blank"
                             rel="noopener noreferrer"
+                            aria-label={`Assistir trailer de ${
+                                movie?.title ?? movie?.name
+                            }`}
                         >
                             <S.TrailerButton>
                                 <span>Assista</span> o trailer

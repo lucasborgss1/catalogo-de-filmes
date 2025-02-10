@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { fetchData, fetchTrailers } from "../../assets/services/data";
+import { useNavigate } from "react-router-dom"; // Importe useNavigate
+import {
+    fetchAll,
+    fetchSearch,
+    fetchTrailers,
+} from "../../assets/services/data";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y } from "swiper/modules";
@@ -31,57 +36,109 @@ export interface MovieProps {
 }
 
 interface FetchType {
-    type: string;
+    type?: string;
+    query?: string;
 }
 
-export const MovieList: React.FC<FetchType> = ({ type }) => {
+export const MovieList: React.FC<FetchType> = ({ type, query }) => {
     const [movies, setMovies] = useState<MovieProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [movieOnFocus, setMovieOnFocus] = useState<MovieProps | null>(null);
     const [trailer, setTrailer] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [countdown, setCountdown] = useState<number>(5);
+    const [isSliding, setIsSliding] = useState(false);
     const swiperRef = useRef<SwiperType | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getMovies = async () => {
+            setLoading(true);
+            setError(null);
             try {
-                setLoading(true);
-                const data = await fetchData(type);
-                setMovies(data.results);
-                setMovieOnFocus(data.results[0]);
+                const data = query
+                    ? await fetchSearch(query)
+                    : type
+                    ? await fetchAll(type)
+                    : null;
+
+                if (data?.results?.length) {
+                    setMovies(data.results);
+                    setMovieOnFocus(data.results[0]);
+                } else {
+                    setMovies([]);
+                    setMovieOnFocus(null);
+                    setError("Nenhum filme ou série encontrado.");
+                    startCountdown();
+                }
             } catch (err) {
                 console.error(err);
+                setError(
+                    "Ocorreu um erro ao carregar os filmes. Tente novamente."
+                );
+                startCountdown();
             } finally {
                 setLoading(false);
             }
         };
 
         getMovies();
-    }, [type]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query, type]);
 
     useEffect(() => {
+        if (!movieOnFocus) {
+            setTrailer(null);
+            return;
+        }
+
+        let isMounted = true;
+
         const getTrailer = async () => {
-            if (movieOnFocus) {
-                try {
-                    const data = await fetchTrailers(
-                        movieOnFocus.media_type,
-                        movieOnFocus.id
-                    );
-                    setTrailer(data[0].key);
-                } catch (err) {
-                    console.log(err);
-                    setTrailer(null);
+            try {
+                const data = await fetchTrailers(
+                    movieOnFocus.media_type,
+                    movieOnFocus.id
+                );
+                if (isMounted) {
+                    setTrailer(data[0]?.key || null);
                 }
+            } catch (err) {
+                console.log(err);
+                if (isMounted) setTrailer(null);
             }
         };
 
         getTrailer();
+
+        return () => {
+            isMounted = false;
+        };
     }, [movieOnFocus]);
 
     const handleSlideClick = (index: number) => {
-        if (swiperRef.current) {
+        if (!isSliding && swiperRef.current) {
+            setIsSliding(true);
             swiperRef.current.slideToLoop(index);
+            setMovieOnFocus(movies[index]);
         }
-        setMovieOnFocus(movies[index]);
+    };
+
+    const startCountdown = () => {
+        setCountdown(3);
+        let timeLeft = 3;
+
+        const interval = setInterval(() => {
+            timeLeft -= 1;
+            setCountdown(timeLeft);
+
+            if (timeLeft === 0) {
+                clearInterval(interval);
+                navigate("/");
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
     };
 
     if (loading) {
@@ -106,40 +163,73 @@ export const MovieList: React.FC<FetchType> = ({ type }) => {
         );
     }
 
-    if (movieOnFocus) {
+    if (error) {
         return (
-            <>
-                <MovieInfos movie={movieOnFocus} trailer={trailer} />
-                <S.SectionMovieList>
-                    <Swiper
-                        speed={500}
-                        loop={true}
-                        loopAdditionalSlides={4}
-                        modules={[A11y]}
-                        spaceBetween={0}
-                        slidesPerView={10}
-                        watchSlidesProgress={true}
-                        centeredSlides={true}
-                        onSwiper={(swiper) => {
-                            swiperRef.current = swiper;
-                        }}
-                        onSlideChange={() => console.log(movieOnFocus, trailer)}
-                        simulateTouch={false}
-                    >
-                        {movies.map((movie, index) => (
-                            <SwiperSlide
-                                key={movie.id}
-                                onClick={() => handleSlideClick(index)}
-                            >
-                                <MovieCard
-                                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                                    title={movie.title || movie.name}
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </S.SectionMovieList>
-            </>
+            <S.ErrorMessage>
+                {error} Redirecionando em {countdown}...
+            </S.ErrorMessage>
         );
     }
+
+    if (!movieOnFocus) {
+        return (
+            <S.ErrorMessage>
+                Nenhum filme ou série em foco no momento. Redirecionando em
+                {countdown}...
+            </S.ErrorMessage>
+        );
+    }
+
+    return (
+        <>
+            <MovieInfos movie={movieOnFocus} trailer={trailer} />
+            <S.SectionMovieList>
+                <Swiper
+                    speed={500}
+                    loop={true}
+                    loopAdditionalSlides={4}
+                    modules={[A11y]}
+                    spaceBetween={10}
+                    slidesPerView={1}
+                    watchSlidesProgress={true}
+                    watchOverflow={false}
+                    centeredSlides={true}
+                    onSwiper={(swiper) => {
+                        swiperRef.current = swiper;
+                    }}
+                    simulateTouch={true}
+                    onSlideChange={() => setIsSliding(false)}
+                    breakpoints={{
+                        320: {
+                            slidesPerView: 2,
+                        },
+                        480: {
+                            slidesPerView: 3,
+                        },
+                        768: {
+                            slidesPerView: 4,
+                        },
+                        1024: {
+                            slidesPerView: 6,
+                        },
+                        1440: {
+                            slidesPerView: 8,
+                        },
+                    }}
+                >
+                    {movies.map((movie, index) => (
+                        <SwiperSlide
+                            key={movie.id}
+                            onClick={() => handleSlideClick(index)}
+                        >
+                            <MovieCard
+                                src={movie.poster_path}
+                                title={movie.title || movie.name}
+                            />
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </S.SectionMovieList>
+        </>
+    );
 };

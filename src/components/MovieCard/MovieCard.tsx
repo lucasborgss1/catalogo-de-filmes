@@ -10,7 +10,10 @@ export const MovieCard: React.FC<MovieCard> = (movieCard) => {
     return (
         <div style={{ display: "flex", justifyContent: "space-between" }}>
             <S.MovieCard>
-                <S.MovieImg src={movieCard.src} alt={movieCard.title} />
+                <S.MovieImg
+                    src={`https://image.tmdb.org/t/p/original/${movieCard.src}`}
+                    alt={movieCard.title}
+                />
             </S.MovieCard>
         </div>
     );
