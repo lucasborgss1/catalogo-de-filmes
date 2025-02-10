@@ -18,7 +18,7 @@ export const InfoSection = styled.section<InfoSectionProps>`
     background-size: contain;
     background-position: right;
     background-repeat: no-repeat;
-    transition: background-image 0.5s ease-in-out, filter 0.5s ease-in-out;
+    transition: background-image 0.5s ease;
 `;
 
 export const GradientOverlay = styled.div`
