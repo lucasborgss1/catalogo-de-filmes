@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import "swiper/css";
-import "swiper/css/pagination";
 
 export const SectionMovieList = styled.section`
     width: 100%;

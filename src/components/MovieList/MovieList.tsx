@@ -7,8 +7,10 @@ import {
 } from "../../assets/services/data";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
 import { A11y } from "swiper/modules";
 import { Swiper as SwiperType } from "swiper";
+import "swiper/swiper-bundle.css";
 
 import * as S from "./styles";
 import { MovieInfos } from "../MovieInfos/MovieInfos";
@@ -188,7 +190,7 @@ export const MovieList: React.FC<FetchType> = ({ type, query }) => {
                     speed={500}
                     loop={true}
                     loopAdditionalSlides={4}
-                    modules={[A11y]}
+                    modules={[A11y, Pagination]}
                     spaceBetween={10}
                     slidesPerView={1}
                     watchSlidesProgress={true}
