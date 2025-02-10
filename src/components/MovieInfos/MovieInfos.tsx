@@ -12,17 +12,21 @@ export const MovieInfos: React.FC<MovieInfoProps> = ({ movie, trailer }) => {
     const [background, setBackground] = useState<string | undefined>();
 
     useEffect(() => {
-        const img = new Image();
-        const imageUrl = movie.backdrop_path
-            ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
-            : `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+        const fetchImage = async () => {
+            const img = new Image();
+            const imageUrl = movie.backdrop_path
+                ? `https://image.tmdb.org/t/p/original/${movie.backdrop_path}`
+                : `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
 
-        img.src = imageUrl;
-        img.onload = () => {
-            setTimeout(() => {
-                setBackground(imageUrl);
-            }, 50);
+            img.src = imageUrl;
+            img.onload = () => {
+                setTimeout(() => {
+                    setBackground(imageUrl);
+                }, 200);
+            };
         };
+
+        fetchImage();
     }, [movie]);
 
     return (
