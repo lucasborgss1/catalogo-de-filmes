@@ -33,13 +33,11 @@ export const Logo = styled.div`
     }
 `;
 
-export const NavList = styled.nav`
-    width: 670px;
-`;
+export const NavList = styled.nav``;
 
 export const List = styled.ul`
     display: flex;
-    justify-content: space-between;
+    gap: 2rem;
     align-items: center;
     list-style: none;
 `;
@@ -48,16 +46,19 @@ export const ListItem = styled.li`
     display: flex;
     align-items: center;
     cursor: default;
+
+    a {
+        text-decoration: none;
+    }
 `;
 
-export const ListItemAdress = styled.a`
-    text-decoration: none;
+export const ListItemAdress = styled.div`
     color: white;
 
     transition: color 0.4s;
 
     &:hover {
-        color: #b5b5b5;
+        color: #f5c51c;
         transition: color 0.4s;
     }
 `;
@@ -79,7 +80,7 @@ export const SearchButton = styled.button`
         transition: color 0.4s;
 
         &:hover {
-            color: #b5b5b5;
+            color: #f5c51c;
             transition: color 0.4s;
         }
     }

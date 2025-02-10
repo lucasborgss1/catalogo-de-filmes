@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-    fetchTrendingMovies,
-    fetchTrailers,
-} from "../../assets/services/movies"; // Importe o fetchTrailers
+import { fetchData, fetchTrailers } from "../../assets/services/data";
 import { MovieCard } from "../MovieCard/MovieCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y } from "swiper/modules";
@@ -33,7 +30,11 @@ export interface MovieProps {
     first_air_date?: string;
 }
 
-export const MovieList: React.FC = () => {
+interface FetchType {
+    type: string;
+}
+
+export const MovieList: React.FC<FetchType> = ({ type }) => {
     const [movies, setMovies] = useState<MovieProps[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [movieOnFocus, setMovieOnFocus] = useState<MovieProps | null>(null);
@@ -44,7 +45,7 @@ export const MovieList: React.FC = () => {
         const getMovies = async () => {
             try {
                 setLoading(true);
-                const data = await fetchTrendingMovies();
+                const data = await fetchData(type);
                 setMovies(data.results);
                 setMovieOnFocus(data.results[0]);
             } catch (err) {
@@ -55,7 +56,7 @@ export const MovieList: React.FC = () => {
         };
 
         getMovies();
-    }, []);
+    }, [type]);
 
     useEffect(() => {
         const getTrailer = async () => {
@@ -65,7 +66,7 @@ export const MovieList: React.FC = () => {
                         movieOnFocus.media_type,
                         movieOnFocus.id
                     );
-                    setTrailer(data.key);
+                    setTrailer(data[0].key);
                 } catch (err) {
                     console.log(err);
                     setTrailer(null);
@@ -111,12 +112,12 @@ export const MovieList: React.FC = () => {
                 <MovieInfos movie={movieOnFocus} trailer={trailer} />
                 <S.SectionMovieList>
                     <Swiper
-                        speed={800}
+                        speed={500}
                         loop={true}
                         loopAdditionalSlides={4}
                         modules={[A11y]}
                         spaceBetween={0}
-                        slidesPerView={window.innerWidth < 768 ? 3 : 10}
+                        slidesPerView={10}
                         watchSlidesProgress={true}
                         centeredSlides={true}
                         onSwiper={(swiper) => {

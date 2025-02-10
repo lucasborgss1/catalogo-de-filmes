@@ -1,10 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Importando Link do React Router
 import { IoIosSearch } from "react-icons/io";
 import * as S from "./styles";
-import { fetchTrendingMovies } from "../../assets/services/movies";
 
 export const Header: React.FC = () => {
-    fetchTrendingMovies();
     return (
         <S.StyledHeader>
             <S.HeaderWrapper>
@@ -14,25 +13,19 @@ export const Header: React.FC = () => {
                 <S.NavList>
                     <S.List>
                         <S.ListItem>
-                            <S.ListItemAdress href="/">
-                                CineVerse
-                            </S.ListItemAdress>
+                            <Link to="/">
+                                <S.ListItemAdress>CineVerse</S.ListItemAdress>
+                            </Link>
                         </S.ListItem>
                         <S.ListItem>
-                            <S.ListItemAdress href="/">Genre</S.ListItemAdress>
+                            <Link to="/movies">
+                                <S.ListItemAdress>Movie</S.ListItemAdress>
+                            </Link>
                         </S.ListItem>
                         <S.ListItem>
-                            <S.ListItemAdress href="/">
-                                Country
-                            </S.ListItemAdress>
-                        </S.ListItem>
-                        <S.ListItem>
-                            <S.ListItemAdress href="/">Movie</S.ListItemAdress>
-                        </S.ListItem>
-                        <S.ListItem>
-                            <S.ListItemAdress href="/">
-                                TV Series
-                            </S.ListItemAdress>
+                            <Link to="/tv">
+                                <S.ListItemAdress>TV Series</S.ListItemAdress>
+                            </Link>
                         </S.ListItem>
                         <S.ListItem>
                             |

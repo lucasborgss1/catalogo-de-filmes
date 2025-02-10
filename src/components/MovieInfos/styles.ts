@@ -54,6 +54,12 @@ export const DetailsWrapper = styled.div`
     }
 
     p {
+        max-height: 250px;
+        padding-right: 10px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ddd transparent;
+
         text-align: justify;
         font-size: 16px;
         line-height: 1.5;
