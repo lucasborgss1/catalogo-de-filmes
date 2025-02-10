@@ -1,8 +1,5 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-
-interface ListItemProps {
-    isActive?: boolean;
-}
 
 export const StyledHeader = styled.header`
     color: white;
@@ -53,22 +50,22 @@ export const List = styled.ul`
     list-style: none;
 `;
 
-export const ListItem = styled.li<ListItemProps>`
+export const ListItem = styled(NavLink)`
     display: flex;
     align-items: center;
-    cursor: default;
-
-    a {
-        text-decoration: none;
-    }
+    text-decoration: none;
 
     div {
-        color: ${({ isActive }) => (isActive ? "#f5c51c" : "white")};
+        color: white;
         transition: color 0.4s;
+    }
 
-        &:hover {
-            color: #f5c51c;
-        }
+    &.active div {
+        color: #f5c51c;
+    }
+
+    &:hover div {
+        color: #f5c51c;
     }
 `;
 

@@ -1,10 +1,9 @@
 import React, { useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
 import * as S from "./styles";
 
 export const Header: React.FC = () => {
-    const location = useLocation();
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [isInputVisible, setIsInputVisible] = useState(false);
@@ -35,20 +34,14 @@ export const Header: React.FC = () => {
 
                 <S.NavList>
                     <S.List>
-                        <S.ListItem isActive={location.pathname === "/"}>
-                            <Link to="/">
-                                <S.ListItemAdress>CineVerse</S.ListItemAdress>
-                            </Link>
+                        <S.ListItem to="/" end>
+                            <S.ListItemAdress>CineVerse</S.ListItemAdress>
                         </S.ListItem>
-                        <S.ListItem isActive={location.pathname === "/movies"}>
-                            <Link to="/movies">
-                                <S.ListItemAdress>Filmes</S.ListItemAdress>
-                            </Link>
+                        <S.ListItem to="/movies">
+                            <S.ListItemAdress>Filmes</S.ListItemAdress>
                         </S.ListItem>
-                        <S.ListItem isActive={location.pathname === "/tv"}>
-                            <Link to="/tv">
-                                <S.ListItemAdress>Séries</S.ListItemAdress>
-                            </Link>
+                        <S.ListItem to="/tv">
+                            <S.ListItemAdress>Séries</S.ListItemAdress>
                         </S.ListItem>
                     </S.List>
 
