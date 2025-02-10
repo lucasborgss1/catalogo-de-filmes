@@ -13,6 +13,7 @@ body, input, button {
 }
 
 body {
+    color: #fff;
     background-color: black;
     height: 100vh;
 }
