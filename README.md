@@ -1,50 +1,90 @@
-# React + TypeScript + Vite
+# CineVerse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CineVerse é uma aplicação web que permite aos usuários explorar filmes e séries populares, buscar por títulos específicos e assistir aos trailers. A aplicação utiliza a API do The Movie Database (TMDb) para obter dados sobre filmes e séries.
 
-Currently, two official plugins are available:
+**Link do Projeto:** [CineVerse no Vercel](https://cine-verse-psi.vercel.app/)  
+**Repositório no GitHub:** [catalogo-de-filmes](https://github.com/lucasborgss1/catalogo-de-filmes)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+-   **Explorar Filmes e Séries**: Visualize os filmes e séries mais populares do dia.
+-   **Busca**: Busque por filmes, séries, atores e programas de TV específicos.
+-   **Trailers**: Assista aos trailers dos filmes e séries diretamente no YouTube.
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Tecnologias Utilizadas
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+-   **React**: Biblioteca JavaScript para construção de interfaces de usuário.
+-   **React Router**: Gerenciamento de rotas na aplicação.
+-   **Axios**: Cliente HTTP para fazer requisições à API do TMDb.
+-   **Swiper**: Biblioteca para criar carrosséis de filmes e séries.
+-   **Styled Components**: Biblioteca para estilização de componentes React.
+-   **Vercel**: Plataforma de deploy e hospedagem.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Como Executar o Projeto
+
+### Pré-requisitos
+
+-   Node.js (v16 ou superior)
+-   npm ou yarn
+
+### Passos para Execução
+
+1. **Clone o repositório**:
+
+    ```bash
+    git clone https://github.com/lucasborgss1/catalogo-de-filmes.git
+    cd catalogo-de-filmes
+    ```
+
+2. **Instale as dependências**:
+
+    ```bash
+    npm install
+
+    # ou
+
+    yarn install
+    ```
+
+3. **Crie um arquivo .env na raiz do projeto e adicione sua chave de API do TMDb**:
+
+    ```bash
+    REACT_APP_TMDB_API_KEY=sua_chave_api_aqui
+    ```
+
+4. **Inicie o servidor de desenvolvimento**:
+
+    ```bash
+    npm start
+
+    # ou
+
+    yarn start
+    ```
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## Créditos
+
+-   **The Movie Database (TMDb)**: Agradeço ao TMDb pela excelente API que fornece dados ricos e atualizados sobre filmes e séries. Sem ela, esse projeto não seria possível.
+-   **Design no Figma**: Agradeço pela inspiração fornecida pelo design encontrado no Figma, que ajudou a guiar a estética e a estrutura da aplicação. [Inspiração no Figma](https://www.figma.com/community/file/1338926652672180913)
+
+---
+
+## Contato
+
+-   **Lucas de Almeida Borges**  
+    GitHub: [lucasborgss1](https://github.com/lucasborgss1)  
+    Email: lucasaborgesdev1@gmail.com
